@@ -4,21 +4,22 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import Register from "./pages/Register";
 import getTransactions from "./pages/getTransaction.jsx"; // Import correctly
-
+import LogoutButton from "./components/LogoutButton.jsx";
 function App() {
   const [transactions, setTransactions] = useState([]);
 
-  useEffect(() => {
-    async function fetchTransactions() {
-      const data = await getTransactions(); // Fetch transaction data
-      setTransactions(data);
-    }
-    fetchTransactions();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchTransactions() {
+  //     const data = await getTransactions(); // Fetch transaction data
+  //     setTransactions(data);
+  //   }
+  //   fetchTransactions();
+  // }, []);
 
   return (
     <>
-      <h1>Solana Budget Tracker</h1>
+    <LogoutButton/>
+      {/* <h1>Solana Budget Tracker</h1>
       <h2>Transaction History</h2>
       <ul>
         {transactions.length > 0 ? (
@@ -30,7 +31,7 @@ function App() {
         ) : (
           <p>Loading transactions...</p>
         )}
-      </ul>
+      </ul> */}
 
       {/* <Register /> */}
     </>

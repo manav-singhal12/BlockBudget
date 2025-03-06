@@ -9,10 +9,14 @@ import Dashboard from './pages/Dashboard.jsx';
 import Register from './pages/Register.jsx';
 import Layout from './Layout.jsx';
 import Login from './pages/Login.jsx';
-import UpdateProfile from './components/UpdateProfile.jsx';
+import UpdateProfile from './pages/UpdateProfile.jsx';
+import Home from './pages/Home.jsx';
+import MyWallets from './pages/MyWallets.jsx';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout/>}>
+      <Route index element={<Home/>}/>
+      <Route path="mywallets" element={<MyWallets/>}/>
       <Route path='register' element={<Register />}/>
       <Route path='login' element={<Login />}/>
       <Route path="dashboard" element={<Dashboard />}/>

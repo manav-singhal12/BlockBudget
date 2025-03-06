@@ -17,6 +17,6 @@ router.route("/register").post(
 
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJWT,logoutUser);
-// router.route("/update-profile").put(verifyJWT,updateProfile);
+router.route("/update-profile").put(verifyJWT,updateProfile);
 
 export default router;

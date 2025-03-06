@@ -25,6 +25,12 @@ app.use(cookieParser());
 import userRouter from './src/routes/user.routes.js'
 app.use('/api/user',userRouter);
 
+import accountRouter from './src/routes/account.routes.js'
+app.use('/api/account',accountRouter);
+
+import paymentRouter from './src/routes/payment.route.js';
+app.use('/api/payment',paymentRouter);
+
 
 
 export{app};
