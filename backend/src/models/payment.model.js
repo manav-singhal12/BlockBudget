@@ -2,16 +2,16 @@ import mongoose, { mongo } from "mongoose";
 import { Schema } from "mongoose";
 
 const paymentSchema=new Schema({
-    wallet_id:{
-        type:Schema.Types.ObjectId,
-        ref:'Account',
-        required:true
-    },
+    // wallet_id:{
+    //     type:Schema.Types.ObjectId,
+    //     ref:'Account',
+    //     required:true
+    // },
     sender_key:{
         type:String,
         required:true
     },
-    reciever_key:{
+    receiver_key:{
         type:String,
         required:true
     },
@@ -22,7 +22,11 @@ const paymentSchema=new Schema({
     category:{
         type:String,
         required:true,
-    }
+    },
+    signature:{
+        type:String,
+        required:true
+    } 
 },{timestamps:true})
 
 export const Payment=mongoose.model('Payment',paymentSchema);

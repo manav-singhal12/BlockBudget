@@ -5,6 +5,8 @@ import "./App.css";
 import Register from "./pages/Register";
 import getTransactions from "./pages/getTransaction.jsx"; // Import correctly
 import LogoutButton from "./components/LogoutButton.jsx";
+import WalletTransactions from "./pages/WalletTransaction.jsx";
+// import GetAccounts from "./components/getAccounts.jsx";
 function App() {
   const [transactions, setTransactions] = useState([]);
 
@@ -18,7 +20,11 @@ function App() {
 
   return (
     <>
+    {/* <WalletTransactions/> */}
+    {/* <WalletTransactions walletAddress="EV9ZmjC2htgiv6bjRTwWXv9abF8qsmUpS3Be8eELSNi8" /> */}
+
     <LogoutButton/>
+    {/* <GetAccounts/> */}
       {/* <h1>Solana Budget Tracker</h1>
       <h2>Transaction History</h2>
       <ul>

@@ -22,4 +22,4 @@ export const WalletApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useAddAccountMutation,useGetAccountsMutation} =WalletApiSlice;
+export const { useAddAccountMutation, useGetAccountsQuery } = WalletApiSlice;

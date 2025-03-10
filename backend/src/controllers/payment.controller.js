@@ -6,19 +6,20 @@ import { Account } from "../models/account.model.js";
 
 const sendPayment = asyncHandler(async (req, res) => {
     console.log(req.body)
-    const { sender_key, reciever_key, amount, category } = req.body;
-    console.log(sender_key,reciever_key,amount,category);
+    const { sender_key, receiver_key, amount, category,signature } = req.body;
+    console.log(sender_key,receiver_key,amount,category);
     //checking sender key exists or not in wallet of user logged in
     const sender = await Account.findOne({public_key:sender_key });
     if (!sender) {
         return res.status(400).json({ message: "Sender key not found in wallet" });
     }
     const payment=await Payment.create({
-        wallet_id:sender,
+        // wallet_id:sender,
         sender_key,
-        reciever_key,
+        receiver_key,
         amount,
-        category
+        category,
+        signature
     });
     return res.status(200).json({ message: "Payment sent successfully", payment });
 

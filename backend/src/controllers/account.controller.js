@@ -30,7 +30,7 @@ const getAccounts=asyncHandler(async(req,res)=>{
     const userId=req.user._id;
     console.log(userId);
     if(!userId){
-        throw new ApiError(401,"Unauthorized");
+        throw new ApiError(401,"Unauthorized ");
     }
     const accounts=await Account.find({user_id:userId}).populate('user_id');
     if(!accounts){

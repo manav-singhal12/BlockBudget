@@ -12,6 +12,9 @@ import Login from './pages/Login.jsx';
 import UpdateProfile from './pages/UpdateProfile.jsx';
 import Home from './pages/Home.jsx';
 import MyWallets from './pages/MyWallets.jsx';
+import WalletTransactions from './pages/WalletTransaction.jsx';
+import TransferFunds from './pages/TransferFunds.jsx';
+import CategorizedTransaction from './pages/CategorizedTransaction.jsx';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout/>}>
@@ -21,6 +24,10 @@ const router = createBrowserRouter(
       <Route path='login' element={<Login />}/>
       <Route path="dashboard" element={<Dashboard />}/>
       <Route path="/update-profile" element={<UpdateProfile />} />
+      <Route path="/transaction" element={<WalletTransactions />} />
+      <Route path="/transferfunds" element={<TransferFunds />} />
+      <Route path="/transactions/:walletkey" element={<CategorizedTransaction />} />
+      <Route path="/updatetransactions/:walletkey" element={<WalletTransactions />} />
 
     </Route>
   )
