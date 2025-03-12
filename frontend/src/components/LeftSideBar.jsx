@@ -1,7 +1,15 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 const LeftSideBar = () => {
+    const { userInfo } = useSelector(state => state.auth);
+    if(userInfo){
+    console.log(userInfo)
+    const user = userInfo.data.user;
+    console.log(user);
+    
     return (
+        
         <div className='bg-gray-500 w-[20%] h-screen' >
             <h1 className='text-cyan-800-900'>BlockBudget</h1>
             <ul>
@@ -61,7 +69,8 @@ const LeftSideBar = () => {
                 </NavLink></li>
             </ul>
         </div>
-    )
+    )}
+    return null;
 }
 
 export default LeftSideBar

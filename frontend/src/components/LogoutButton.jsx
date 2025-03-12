@@ -25,7 +25,7 @@ const LogoutButton = () => {
     };
 
     return (<>
-        <button onClick={LogoutHandler} className="flex items-center space-x-2">
+        <button onClick={LogoutHandler} className="flex items-center space-x-2 text-black">
               <span>Logout</span>
             </button>
     </>)

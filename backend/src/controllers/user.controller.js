@@ -21,7 +21,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-    const { username, fullname, email, password, walletKey } = req.body;
+    const { username, fullname, email, password } = req.body;
     console.log(req.body)
     console.log(username,password)
     const existingUser = await User.findOne({
@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
-        username, fullname, email, password, avatar: avatar.url, walletKey
+        username, fullname, email, password, avatar: avatar.url, 
     })
 
     const createdUser = await User.findById(user._id).select(

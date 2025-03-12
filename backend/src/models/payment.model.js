@@ -15,6 +15,10 @@ const paymentSchema=new Schema({
         type:String,
         required:true
     },
+    receivername:{
+        type:String,
+        required:true,
+    },
     amount:{
         type:Number,
         required:true,

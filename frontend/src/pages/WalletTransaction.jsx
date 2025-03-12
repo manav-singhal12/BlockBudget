@@ -10,6 +10,7 @@ const WalletTransactions = () => {
   const { walletkey } = useParams();
   const walletAddress = walletkey;
   const [categoryInputs, setCategoryInputs] = useState({});
+  const [receivernameInputs, setReceivernameInputs] = useState({}); // New state for receiver name
   const { data, error, isError, isLoading } = useGetPaymentsQuery();
   const [sendPayment] = useSendPaymentMutation();
 
@@ -77,19 +78,35 @@ const WalletTransactions = () => {
   const storedSignatures = new Set(data?.payments?.map((payment) => payment.signature));
 
   // Filter transactions not in the database
-  const filteredTransactions = transactions.filter(
-    (t) => !storedSignatures.has(t.transaction.signatures[0])
-  );
+  const filteredTransactions = transactions.filter((t) => {
+    if (!t?.meta || !t?.transaction) return false;
+
+    const senderKey = t.transaction.message.accountKeys[0].toString();
+    const amountDeducted =
+      (t.meta.preBalances[0] - t.meta.postBalances[0] + t.meta.fee) / 1e9;
+
+    return (
+      !storedSignatures.has(t.transaction.signatures[0]) &&
+      senderKey === walletAddress && 
+      amountDeducted > 0
+    );
+  });
 
   // Handle category input change
   const handleCategoryChange = (signature, value) => {
     setCategoryInputs((prev) => ({ ...prev, [signature]: value }));
   };
 
+  // Handle receiver name input change
+  const handleReceiverNameChange = (signature, value) => {
+    setReceivernameInputs((prev) => ({ ...prev, [signature]: value }));
+  };
+
   // Handle add payment function
   const handleAddPayment = async (transaction) => {
     const signature = transaction.transaction.signatures[0];
     const category = categoryInputs[signature] || "Uncategorized";
+    const receiver_name = receivernameInputs[signature] || "Unknown";
 
     const paymentData = {
       sender_key: transaction.transaction.message.accountKeys[0].toString(),
@@ -97,6 +114,7 @@ const WalletTransactions = () => {
       amount: ((transaction.meta.preBalances[0] - transaction.meta.postBalances[0] + transaction.meta.fee) / 1e9).toFixed(5),
       signature: signature,
       category: category,
+      receivername: receiver_name, // Added receiver name field
       created_at: new Date(transaction.blockTime * 1000).toISOString(), // Storing timestamp
     };
 
@@ -113,30 +131,50 @@ const WalletTransactions = () => {
   return (
     <div>
       <h3>Transactions for {walletAddress}</h3>
-      <ul>
-        {filteredTransactions.map((t, index) => (
-          <li key={index}>
-            <strong>Transaction {index + 1}:</strong>
-            <p><strong>Time:</strong> {new Date(t.blockTime * 1000).toLocaleString()}</p>
-            <p><strong>Amount Paid:</strong> {((t.meta.preBalances[0] - t.meta.postBalances[0] + t.meta.fee) / 1e9).toFixed(5)} SOL</p>
-            <p><strong>Sender:</strong> {t.transaction.message.accountKeys[0].toString()}</p>
-            <p><strong>Receiver:</strong> {t.transaction.message.accountKeys[1].toString()}</p>
-            <p><strong>Signature:</strong> {t.transaction.signatures[0]}</p>
-
-            <label>
-              <strong>Category:</strong>
-              <input
-                type="text"
-                placeholder="Enter category"
-                value={categoryInputs[t.transaction.signatures[0]] || ""}
-                onChange={(e) => handleCategoryChange(t.transaction.signatures[0], e.target.value)}
-              />
-            </label>
-
-            <button onClick={() => handleAddPayment(t)}>Add Payment</button>
-          </li>
-        ))}
-      </ul>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Time</th>
+            <th>Amount Paid (SOL)</th>
+            <th>Sender</th>
+            <th>Receiver</th>
+            <th>Category</th>
+            <th>Receiver Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredTransactions.map((t, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{new Date(t.blockTime * 1000).toLocaleString()}</td>
+              <td>{((t.meta.preBalances[0] - t.meta.postBalances[0] + t.meta.fee) / 1e9).toFixed(5)}</td>
+              <td>{t.transaction.message.accountKeys[0].toString()}</td>
+              <td>{t.transaction.message.accountKeys[1].toString()}</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Enter category"
+                  value={categoryInputs[t.transaction.signatures[0]] || ""}
+                  onChange={(e) => handleCategoryChange(t.transaction.signatures[0], e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Enter receiver name"
+                  value={receivernameInputs[t.transaction.signatures[0]] || ""}
+                  onChange={(e) => handleReceiverNameChange(t.transaction.signatures[0], e.target.value)}
+                />
+              </td>
+              <td>
+                <button onClick={() => handleAddPayment(t)}>Add Payment</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {loading && <div>Loading more transactions...</div>}
       {!loading && nextSignature && <button onClick={loadMore}>Load More</button>}

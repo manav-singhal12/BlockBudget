@@ -53,8 +53,8 @@ const WalletConnect = () => {
   };
 
   return (
-    <div>
-      <button onClick={connectWallet}>
+    <div className="">
+      <button onClick={connectWallet} className="w-[70%] mx-[15%] my-10 hover:cursor-pointer p-3 bg-[#8807f3] text-white rounded-lg uppercase font-semibold hover:bg-[#5A03AD] transition">
         Add Wallet
       </button>
       <GetAccounts/>

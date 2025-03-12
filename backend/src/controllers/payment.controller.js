@@ -6,7 +6,7 @@ import { Account } from "../models/account.model.js";
 
 const sendPayment = asyncHandler(async (req, res) => {
     console.log(req.body)
-    const { sender_key, receiver_key, amount, category,signature } = req.body;
+    const { sender_key, receiver_key,receivername, amount, category,signature } = req.body;
     console.log(sender_key,receiver_key,amount,category);
     //checking sender key exists or not in wallet of user logged in
     const sender = await Account.findOne({public_key:sender_key });
@@ -17,6 +17,7 @@ const sendPayment = asyncHandler(async (req, res) => {
         // wallet_id:sender,
         sender_key,
         receiver_key,
+        receivername,
         amount,
         category,
         signature

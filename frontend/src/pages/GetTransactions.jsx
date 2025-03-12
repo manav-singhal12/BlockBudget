@@ -2,7 +2,7 @@ import React from 'react'
 import { useGetPaymentsQuery } from "../redux/api/PaymentApiSlice";
 import { useParams } from "react-router-dom";
 import { useGetAccountsQuery } from '../redux/api/WalletApiSlice';
-const CategorizedTransaction = () => {
+const GetTransaction = () => {
     const { data, error, isError, isLoading } = useGetPaymentsQuery();
     const { walletkey } = useParams(); // Get the public key from the route
     const { data: AccountData } = useGetAccountsQuery(); // ✅ Hook at the top
@@ -22,22 +22,26 @@ const CategorizedTransaction = () => {
         (transaction) => transaction.sender_key === walletkey
     );
     console.log(filteredTransactions);
+    const transactions = data?.payments || [];
+const stransactions = [...transactions].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
     return (
         <div className='p-10'>
-            <div className="bg-[#8807f3] flex justify-between p-3 rounded-lg">
+            {/* <div className="bg-[#2b2b2b] flex justify-between p-3 rounded-lg">
                 <h2 className=''><strong>Transactions for Wallet:</strong> {walletkey}</h2>
                 <p>
                     <strong>Balance:</strong>{" "}
                     {account?.balance ? parseFloat(account.balance).toFixed(2) : "N/A"} SOL
                 </p>
-            </div>
+            </div> */}
 
-            {filteredTransactions && filteredTransactions.length > 0 ? (
-                <div className="overflow-x-auto p-4">
+            {stransactions && stransactions.length > 0 ? (
+                <div className="overflow-x-auto p-1 ">
                     <table className="min-w-full bg-[#2b2b2b] text-white border border-gray-700 rounded-lg">
                         <thead>
                             <tr className="bg-[#1a1a1a] text-center">
                                 <th className="p-2 border border-gray-600">S.No</th>
+                                <th className="p-2 border border-gray-600">Sender Key</th>
                                 <th className="p-2 border border-gray-600">Receiver Key</th>
                                 <th className="p-2 border border-gray-600">Receiver Name</th>
                                 <th className="p-2 border border-gray-600">Amount (SOL)</th>
@@ -46,9 +50,10 @@ const CategorizedTransaction = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredTransactions.map((txn, index) => (
+                            {stransactions.map((txn, index) => (
                                 <tr key={index} className="hover:bg-[#3a3a3a] text-center">
                                     <td className="p-2 border border-gray-600">{index + 1}</td>
+                                    <td className="p-2 border border-gray-600">{txn.sender_key}</td>
                                     <td className="p-2 border border-gray-600">{txn.receiver_key}</td>
                                     <td className="p-2 border border-gray-600">{txn.receivername}</td>
                                     <td className="p-2 border border-gray-600">{txn.amount?.toFixed(4)} SOL</td>
@@ -78,4 +83,4 @@ const CategorizedTransaction = () => {
     );
 };
 
-export default CategorizedTransaction;
+export default GetTransaction;

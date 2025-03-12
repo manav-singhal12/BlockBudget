@@ -12,6 +12,7 @@ const TransferFunds = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [receiverKey, setReceiverKey] = useState("");
+  const [receivername, setReceiverName] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -105,6 +106,7 @@ const TransferFunds = () => {
 
       sender_key:walletAddress,
       receiver_key:receiverKey,
+      receivername,
       amount,
       category,
       signature: transactionSignature,
@@ -112,6 +114,11 @@ const TransferFunds = () => {
 
     try {
       await sendPayment(paymentData).unwrap();
+      setReceiverKey("");
+      setReceiverName("");
+      setAmount("");
+      setCategory("");
+
       alert("Transaction and Payment Recorded Successfully!");
     } catch (error) {
       console.error("Error sending payment data to backend:", error);
@@ -126,46 +133,66 @@ const TransferFunds = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-r from-purple-600 to-blue-500">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full transform transition-all hover:scale-105">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">💸 Send Money</h1>
+    <div className="min-h-screen flex items-center justify-center p-6  ">
+      <div className="bg-[#2b2b2b] rounded-2xl shadow-2xl p-8 max-w-md w-full">
+        <h1 className="text-3xl font-bold text-center  mb-6"> Send Money</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           
           {/* Receiver Key */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Receiver Key</label>
+            <label className="block text-sm font-medium  mb-2">Receiver Key</label>
             <input
               type="text"
               value={receiverKey}
               onChange={(e) => setReceiverKey(e.target.value)}
-              placeholder="Enter receiver address"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder="Enter Receiver Key"
+              className="w-full p-3 border rounded-2xl mt-1 focus:outline-none border-black bg-black text-white"
+
+              // className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              required
+            />
+          </div>
+          {/* {Receiver Name} */}
+          <div>
+            <label className="block text-sm font-medium  mb-2">Receiver Name</label>
+            <input
+              type="text"
+              value={receivername}
+              onChange={(e) => setReceiverName(e.target.value)}
+              placeholder="Enter Receiver Name"
+              className="w-full p-3 border rounded-2xl mt-1 focus:outline-none border-black bg-black text-white"
+              
+              // className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               required
             />
           </div>
 
           {/* Amount */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Amount (SOL)</label>
+            <label className="block text-sm font-medium  mb-2">Amount (SOL)</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter amount"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full p-3 border rounded-2xl mt-1 focus:outline-none border-black bg-black text-white"
+              
+              // className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               required
             />
           </div>
 
           {/* Category */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <label className="block text-sm font-medium  mb-2">Category</label>
             <input
               type="text"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               placeholder="Enter category"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full p-3 border rounded-2xl mt-1 focus:outline-none border-black bg-black text-white"
+
+              // className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               required
             />
           </div>
@@ -174,7 +201,8 @@ const TransferFunds = () => {
           <button 
             type="button" 
             onClick={connectWallet} 
-            className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-all"
+            className="w-full p-3 bg-[#8807f3] text-white rounded-lg uppercase font-semibold hover:bg-[#5A03AD] transition"
+
           >
             {wallet ? "Connected" : "Connect Wallet"}
           </button>
@@ -183,7 +211,9 @@ const TransferFunds = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full p-3 bg-[#8807f3] text-white rounded-lg uppercase font-semibold hover:bg-[#5A03AD] transition"
+
+            // className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Processing..." : "Send Money"}
           </button>
